@@ -20,7 +20,7 @@ that family.
 
 ## Requirements
 
-- Gramps 5.x or 6.x. The rule file works on both (the rule method was renamed
+- Gramps 5.2 or higher. The rule file works on both (the rule method was renamed
   between the two major versions, and this addon defines both names).
 
 ## Installation
@@ -37,12 +37,7 @@ that family.
    - `hascommonbiologicalancestor.py`
    - `hascommonbiologicalancestor.gpr.py`
 
-3. Open `hascommonbiologicalancestor.gpr.py` and set `gramps_target_version`
-   to **your** Gramps version, `major.minor` (see **Help → About**), e.g.
-   `"6.0"` or `"5.2"`. If this does not match, Gramps will refuse to load the
-   rule.
-
-4. Restart Gramps. If anything went wrong during loading, **Help → Plugin
+3. Restart Gramps. If anything went wrong during loading, **Help → Plugin
    Manager** will show the error.
 
 ## Usage

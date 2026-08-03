@@ -20,7 +20,7 @@ that family.
 
 ## Compatibility
 
-- Gramps 5.x or 6.x.
+- Gramps 5.2 or higher.
 - Tested with Gramps 6.0.8 on Windows 11 and Zorin OS 18.1 Core
 - macOS not tested
 

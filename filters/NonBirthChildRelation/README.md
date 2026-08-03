@@ -21,7 +21,7 @@ who *should* be on the list but isn't (because they were left at the default).
 
 ## Requirements
 
-- Gramps 5.x or 6.x. The rule file works on both.
+- Gramps 5.2 or higher.
 
 ## Installation
 
@@ -34,10 +34,6 @@ who *should* be on the list but isn't (because they were left at the default).
 2. Create a subfolder, e.g. `NonBirthChildRelation`, and copy both files into it:
    - `hasnonbirthchildrelation.py`
    - `hasnonbirthchildrelation.gpr.py`
-
-3. Open `hasnonbirthchildrelation.gpr.py` and set `gramps_target_version` to
-   **your** Gramps version, `major.minor` (see **Help → About**). If it does not
-   match, Gramps will refuse to load the rule.
 
 4. Restart Gramps. Any load error is shown in **Help → Plugin Manager**.
 

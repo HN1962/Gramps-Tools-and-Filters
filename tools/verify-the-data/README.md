@@ -28,10 +28,7 @@ That means:
 
 ## Requirements
 
-- Gramps 5.x or 6.x.
-- The value of `gramps_target_version` in `VerifyHTML.gpr.py` must match your
-  Gramps version (major.minor). It ships set to `"6.0"`; on Gramps 5.2 change
-  it to `"5.2"`, otherwise Gramps lists the tool as needing an update.
+- Gramps 5.2 or higher.
 
 ## Installation
 

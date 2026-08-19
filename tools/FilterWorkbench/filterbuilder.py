@@ -165,11 +165,9 @@ class _FilterBuilderWindow(ManagedWindow):
         note.set_line_wrap(True)
         note.get_style_context().add_class("dim-label")
         note.set_text(_("Build a main filter below. The match count updates "
-                        "automatically. Press a Test button to see the result "
-                        "in the person view without closing the builder. Save "
-                        "before you close the builder.\n"
-                        "\u26a0 Main and helper filters don't appear in Gramps' "
-                        "own filter editor."))
+                        "automatically. \u26a0\ufe0f Main and helper "
+                        "filters don't appear in Gramps' own filter "
+                        "editor."))
         box.pack_start(note, False, False, 0)
 
         main_items = [(f["id"], f["name"]) for f in self.engine.list("main")]
@@ -320,7 +318,17 @@ class _FilterBuilderWindow(ManagedWindow):
         # baseline for the unsaved-changes check on Close (see close()).
         self._clean_snapshot = self._payload_snapshot()
 
-        window.add(box)
+        # Wrap the whole content in a vertical scroller so the window stays
+        # usable at large font sizes / small screens: if the content is taller
+        # than the window, a vertical scrollbar appears instead of the bottom
+        # (buttons) being clipped off with no way to reach it. A Gtk.Box isn't
+        # natively scrollable, so ScrolledWindow.add() wraps it in a Viewport
+        # automatically. NEVER on the horizontal axis fits content to the
+        # window width; the inner lists keep their own scroll for wide rows.
+        scroller = Gtk.ScrolledWindow()
+        scroller.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroller.add(box)
+        window.add(scroller)
         self.set_window(window, None, self.title)
         # Remember this window's geometry in Gramps' config (ini), the same way
         # Gramps' own dialogs do. close() calls super().close(), which saves size
@@ -990,7 +998,17 @@ class _HelperEditor(ManagedWindow):
         btnrow.pack_start(cab, False, False, 0)
         box.pack_start(btnrow, False, False, 0)
 
-        window.add(box)
+        # Wrap the whole content in a vertical scroller so the window stays
+        # usable at large font sizes / small screens: if the content is taller
+        # than the window, a vertical scrollbar appears instead of the bottom
+        # (buttons) being clipped off with no way to reach it. A Gtk.Box isn't
+        # natively scrollable, so ScrolledWindow.add() wraps it in a Viewport
+        # automatically. NEVER on the horizontal axis fits content to the
+        # window width; the inner lists keep their own scroll for wide rows.
+        scroller = Gtk.ScrolledWindow()
+        scroller.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scroller.add(box)
+        window.add(scroller)
         self.set_window(window, None, self.title)
         # Remember this window's geometry in Gramps' config (ini), the same way
         # Gramps' own dialogs do. Our close() calls super().close(), which saves

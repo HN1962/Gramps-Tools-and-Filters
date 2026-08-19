@@ -39,6 +39,7 @@ and only keep what works — all stored in its own per‑tree file. **Your
 ## Install
 
 1. Close your family tree and Gramps.
+
 2. Locate your Gramps user plugin folder:
    - **Windows:** `%APPDATA%\gramps\gramps<XY>\plugins\`
    - **Linux/macOS:** `~/.gramps/gramps<XY>/plugins/`

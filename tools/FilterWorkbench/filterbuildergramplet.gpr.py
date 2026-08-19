@@ -16,7 +16,7 @@ register(
     name=_("FilterWorkbench"),
     description=_("Use, build, edit and share your own person filters, "
                   "separate from Gramps' own filter list."),
-    version="1.0.0",
+    version="1.0.1",
     gramps_target_version="%d.%d" % (VERSION_TUPLE[0], VERSION_TUPLE[1]),
     status=STABLE,
     fname="filterbuildergramplet.py",

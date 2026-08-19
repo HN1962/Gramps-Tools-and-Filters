@@ -96,15 +96,6 @@ class FilterWorkbenchGramplet(Gramplet):
         box.set_margin_top(10)
         box.set_margin_bottom(10)
 
-        info = Gtk.Label()
-        info.set_halign(Gtk.Align.START)
-        info.set_xalign(0.0)
-        info.set_line_wrap(True)
-        info.set_text(_("FilterWorkbench is for beginners and slightly "
-                        "experienced users who understand how the 3 ways of "
-                        "combining rules work."))
-        box.pack_start(info, False, False, 0)
-
         # --- saved-filter picker -----------------------------------------
         lbl = Gtk.Label()
         lbl.set_halign(Gtk.Align.START)
@@ -166,6 +157,17 @@ class FilterWorkbenchGramplet(Gramplet):
         row3.pack_start(self.btn_import, True, True, 0)
         row3.pack_start(self.btn_export, True, True, 0)
         box.pack_start(row3, False, False, 0)
+
+        # Positioning note: audience text sits BELOW the controls so the
+        # action buttons are first; explanatory text is grouped at the bottom.
+        info = Gtk.Label()
+        info.set_halign(Gtk.Align.START)
+        info.set_xalign(0.0)
+        info.set_line_wrap(True)
+        info.set_text(_("FilterWorkbench is for beginners and slightly "
+                        "experienced users who understand how the 3 ways of "
+                        "combining rules work."))
+        box.pack_start(info, False, False, 0)
 
         features = Gtk.Label()
         features.set_halign(Gtk.Align.START)

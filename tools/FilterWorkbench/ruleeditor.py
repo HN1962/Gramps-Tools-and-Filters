@@ -86,6 +86,50 @@ def _rule_paned_get():
 
 FILTER_LABEL = _("Filter name:")   # same-namespace filter argument (Person here)
 
+
+def _regex_tooltip():
+    """Gramps' EGEN faste tooltip til regex-checkboxen, saa dansk kommer gratis.
+
+    Gramps aendrede msgid'en mellem 5.1 og 5.2: 5.1 har en gammel, flad tekst;
+    5.2 og 6.0 deler en ny, tab-formateret. Vi vaelger den version-native msgid
+    (ud fra VERSION_TUPLE, praecis som .gpr'ens gramps_target_version) saa
+    _()-opslaget rammer den oversatte streng paa HVER maalversion (5.1/5.2/6.0).
+    Genskaber ORDRET Gramps' streng i gramps/gui/editors/filtereditor.py; en
+    afvigelse ville faa opslaget til at falde tilbage til engelsk.
+    """
+    try:
+        from gramps.version import VERSION_TUPLE
+        new_style = tuple(VERSION_TUPLE[:2]) >= (5, 2)
+    except Exception:
+        new_style = True                      # default til den moderne streng
+    if new_style:
+        return _(
+            "Interpret the contents of string fields as regular "
+            "expressions:\n"
+            ".\tA decimal point will match any character.\n"
+            "?\tA question mark will match zero or one occurences "
+            "of the previous character or group.\n"
+            "*\tAn asterisk will match zero or more occurences.\n"
+            "+\tA plus sign will match one or more occurences.\n"
+            "()\tUse parentheses to group expressions.\n"
+            "|\tSpecify alternatives using a vertical bar.\n"
+            "^\tA caret will match the start of a line.\n"
+            "$\tA dollar sign will match the end of a line."
+        )
+    return _(
+        "Interpret the contents of string fields as regular "
+        "expressions.\n"
+        "A decimal point will match any character. "
+        "A question mark will match zero or one occurences "
+        "of the previous character or group. "
+        "An asterisk will match zero or more occurences. "
+        "A plus sign will match one or more occurences. "
+        "Use parentheses to group expressions. "
+        "Specify alternatives using a vertical bar. "
+        "A caret will match the start of a line. "
+        "A dollar sign will match the end of a line."
+    )
+
 # A rule's labels are translated by ITS OWN catalog (addon rules use
 # get_addon_translator), which may differ from our core translation -- or be
 # untranslated (raw English) in this locale. So we match BOTH the English
@@ -341,6 +385,7 @@ class RuleEditor(ManagedWindow):
                 # _make_rule): tikkes regex, gemmes use_regex (+ use_case) paa
                 # reglen og saettes paa Gramps-reglen ved materialisering.
                 use_regex = Gtk.CheckButton(label=_("Use regular expressions"))
+                use_regex.set_tooltip_text(_regex_tooltip())   # som Gramps' egen
                 use_regex.set_halign(Gtk.Align.START)
                 grid.attach(use_regex, 1, pos, 1, 1)
                 pos += 1

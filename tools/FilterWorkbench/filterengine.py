@@ -672,6 +672,33 @@ class FilterEngine:
             except ValueError:
                 pass
 
+    @staticmethod
+    def _ensure_filter_mode(view):
+        """Sørg for at listen er i FILTER-tilstand, ellers ignoreres vores filter.
+
+        Gramps' ListView.build_tree() bruger KUN view.generic_filter naar
+        soegelinjen er SKJULT:
+
+            if not self.search_bar.is_visible():
+                filter_info = (True, self.generic_filter, False)   # vores filter
+            else:
+                filter_info = (False, <soegetekst>, ...)           # ignorerer det
+
+        Er soegelinjen fremme (personlisten i soege-tilstand), skubber 'Anvend
+        filter' (oejet) et generic_filter som build_tree saa smider vaek -> oejet
+        ser ud til at 'ikke virke' UDEN fejl. Det ramte 5.1-opsaetningen, hvor
+        listen stod i soege-tilstand; 5.2/6.0 stod i filter-tilstand og virkede.
+        Vi skjuler soegelinjen (praecis som Gramps' eget sidebar_toggled goer),
+        saa generic_filter honoreres. Samme SearchBar.hide()/is_visible()-API paa
+        5.1 og 6.0. Alt i try/except: kan aldrig goere en visning daarligere.
+        """
+        try:
+            sb = getattr(view, "search_bar", None)
+            if sb is not None and sb.is_visible():
+                sb.hide()
+        except Exception:
+            pass
+
     def preview(self, fid, user=None):
         """Kortlivet koersel. Returnerer liste af handles. Rydder ALT op."""
         db = self.dbstate.db
@@ -723,7 +750,10 @@ class FilterEngine:
                 if cls is None:
                     raise ValueError(
                         "Regel ikke i paletten: %s" % rule.get("class"))
-                top.add_rule(cls(values))
+                # Samme materialisering som _materialize: baer evt. regex/case
+                # med, ellers taber live-tallet flaget (byggede foer cls(values)
+                # direkte -> regex slog aldrig igennem i det ugemte build).
+                top.add_rule(self._make_rule(cls, values, rule))
             top.set_logical_op(op if op in OPS else "and")
             top.set_invert(bool(invert))
             custom._cached = {}
@@ -754,6 +784,7 @@ class FilterEngine:
         top_gf.set_name(self._view_display_name(fid, custom, registered))
         custom._cached = {}
         view.generic_filter = top_gf
+        self._ensure_filter_mode(view)   # ellers ignorerer build_tree filteret
         view.build_tree()
         # BEHOLD registreringerne — visningen genberegner filteret senere.
         self._set_view_run_filters([gf for (_rn, gf) in registered.values()])
@@ -821,12 +852,16 @@ class FilterEngine:
             cls = palette.get(rule.get("class"))
             if cls is None:
                 raise ValueError("Regel ikke i paletten: %s" % rule.get("class"))
-            top.add_rule(cls(values))
+            # Som _materialize / preview_rules: baer evt. regex/case med, saa et
+            # ugemt build der skubbes til visningen matcher paa samme maade som
+            # det gemte (og som live-tallet).
+            top.add_rule(self._make_rule(cls, values, rule))
         top.set_logical_op(op if op in OPS else "and")
         top.set_invert(bool(invert))
         custom._cached = {}
         count = len(top.apply(db, user=user))    # samme tal som live-tallet
         view.generic_filter = top
+        self._ensure_filter_mode(view)   # ellers ignorerer build_tree filteret
         view.build_tree()
         # BEHOLD kun boerne-registreringerne saa visningen kan genberegne.
         self._set_view_run_filters([gf for (_rn, gf) in registered.values()])

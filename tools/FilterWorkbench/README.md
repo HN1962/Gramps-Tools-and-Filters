@@ -5,7 +5,7 @@ person filters — with reusable *helper filters* as building blocks. It lives i
 **People** view sidebar and keeps its filters completely separate from Gramps' own
 filter editor list.
 
-> Danish UI included ("Filterværksted"). Works on Gramps **5.2** and **6.0.x**,
+> Danish UI included ("Filterværksted"). Works on Gramps **5.1** and **6.0.x**,
 > Windows and Linux.
 
 ---
@@ -72,7 +72,7 @@ and only keep what works — all stored in its own per‑tree file. **Your
 
 ## Requirements
 
-- Gramps 5.2 or 6.0.x (one code base fits both), Python 3, GTK 3.
+- Gramps 5.1 or 6.0.x (one code base fits both), Python 3, GTK 3.
 - If you import a filter that references a **rule add‑on** (e.g. a custom rule), install
   that same add‑on in the target Gramps — the import will warn you if it's missing.
 

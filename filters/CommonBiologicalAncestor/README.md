@@ -1,4 +1,5 @@
 # Common Biological Ancestor — a Gramps filter rule
+[ReadMe](README.md) • [Release Notes](RELEASE_NOTES.md) • [GNU GPL (license)](LICENSE)
 
 A custom filter rule for [Gramps](https://gramps-project.org/) that matches
 people who share a **biological** ancestor with a chosen person.

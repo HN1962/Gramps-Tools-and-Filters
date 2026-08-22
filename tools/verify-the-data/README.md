@@ -1,4 +1,5 @@
 # Verify the Data → HTML report
+[ReadMe](README.md) • [Release Notes](RELEASE_NOTES.md) • [GNU GPL (license)](LICENSE)
 
 A Gramps tool that runs the built-in **Verify the Data** checks and saves the
 result as a self-contained, sortable HTML report in which each item can be

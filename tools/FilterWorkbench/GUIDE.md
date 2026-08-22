@@ -74,6 +74,19 @@ At the top a short note reminds you what the window does. Below that:
 - **Reset view** — clear the test and show everyone again.
 - **Save** — the only action that writes to disk.
 
+### Picking a rule — categories, search & favorites
+
+When you press **New** (or **Edit**) on a rule, rules are shown grouped by category in a
+searchable tree. Type in the search box to narrow the list.
+
+To keep the rules you use most within easy reach, **right‑click any rule** and choose
+**Add to favorites** (right‑click again for **Remove from favorites**). Favorited rules
+appear under a pinned **★ Favorites** group at the very top of the tree, listed
+alphabetically — while *also* staying in their normal category, so nothing moves around.
+The list is remembered across sessions and shared across all your family trees (stored by
+the rule's internal name, so it's language‑independent). Remove your last favorite and the
+group simply disappears.
+
 ### Live match count
 
 While you build, FilterWorkbench shows how many people the current filter matches, and
@@ -136,7 +149,7 @@ Rules that support it (the ones with a *Use regular expressions* option in the r
 editor) can match by regex, and optionally **case‑sensitively**. Tick *Use regular
 expressions* to treat the value as a regex; the *Case sensitive* option becomes available
 when regex is on. These settings are saved with the rule and re‑applied whenever the
-filter runs, on both Gramps 5.2 and 6.0.
+filter runs, on Gramps 5.1, 5.2 and 6.0.
 
 ## 9. Notes & known limitations
 

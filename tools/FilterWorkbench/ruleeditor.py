@@ -34,6 +34,18 @@ import json
 from gramps.gen.const import GRAMPS_LOCALE as glocale
 _ = glocale.translation.gettext
 
+# ...but for OUR OWN UI strings (favorites labels/menu) we need the ADDON
+# catalog, exactly like filterbuilder.py/filterbuildergramplet.py do. Kept as a
+# SEPARATE name ``_a`` so the main ``_`` above stays bound to Gramps' catalog
+# (rule-label matching depends on it). Falls back to Gramps' translation if the
+# addon catalog can't be loaded, so a missing .mo never crashes -- strings just
+# show untranslated.
+try:
+    _addon_trans = glocale.get_addon_translator(__file__)
+except Exception:
+    _addon_trans = glocale.translation
+_a = _addon_trans.gettext
+
 from gramps.gen.filters import rules
 from gramps.gen.utils.string import conf_strings
 from gramps.gen.datehandler import displayer
@@ -83,6 +95,48 @@ def _rule_paned_get():
         return v if v >= 100 else _RULE_PANED_DEFAULT
     except Exception:
         return _RULE_PANED_DEFAULT
+
+
+# ---------------------------------------------------------------------------
+# Favoritter (V1.1): en pinnet pseudo-kategori ØVERST med de regler brugeren
+# stjernemarkerer. Reglerne bliver OGSAA staaende i deres rigtige kategori --
+# favorit-raekken peger paa samme class_obj, saa valg/redigering/preselect er
+# uroert. Lagres app-bredt i ui.json paa reglens __name__ (IKKE dens oversatte
+# .name), saa listen foelger brugeren paa tvaers af slaegtsboeger OG sprog.
+#
+# Favorit-UI'ens tekster gaar gennem ADDON-oversaetteren (_a), saa de foelger
+# addonnets da.po/addon.mo (100 %/0 fuzzy). Stjernen holdes UDEN for den
+# oversaettelige streng: den er universel, og msgid'en bliver renere ("Favorites"
+# frem for "★ Favorites"). Samlingen sker ved visning (_fav_label()).
+def _fav_label():
+    return "★ " + _a("Favorites")
+
+
+_FAV_ADD_MSGID = "Add to favorites"
+_FAV_REMOVE_MSGID = "Remove from favorites"
+
+
+def _favorites_key(namespace):
+    """ui.json-noegle, namespace-scoped saa andre namespaces kan komme senere."""
+    return "favorites_%s" % namespace
+
+
+def _resolve_favorites(class_list, fav_names):
+    """De regel-klasser i class_list hvis __name__ er favorit -- alfabetisk.
+
+    Ukendte navne (afinstalleret addon-regel, eller en regel der ikke findes i
+    den koerende Gramps-version) er simpelthen ikke i class_list og springes
+    dermed HARMLOEST over. Ren funktion -> bevises headless.
+    """
+    got = [c for c in class_list if c.__name__ in fav_names]
+    return sorted(got, key=lambda c: (c.name or "").lower())
+
+
+def _toggled_favorites(fav_names, name):
+    """Returner et NYT saet med 'name' skiftet til/fra. Ren funktion."""
+    s = set(fav_names)
+    s.discard(name) if name in s else s.add(name)
+    return s
 
 FILTER_LABEL = _("Filter name:")   # same-namespace filter argument (Person here)
 
@@ -547,6 +601,79 @@ class RuleEditor(ManagedWindow):
             node = self.store.insert_after(self._top_node[class_obj.category], prev)
             self.store.set(node, 0, class_obj.name, 1, class_obj)
 
+        # Favoritter pinnes ØVERST: bygges TIL SIDST og prepend'es, saa den
+        # ligger foer alle (alfabetisk sorterede) kategorier. Reglerne staar
+        # ogsaa i deres rigtige kategori -- dette er en ekstra visning af dem.
+        self._fav_node = None
+        self._build_favorites_node()
+        self._expand_favorites()
+
+    # ------------------------------------------------------------------
+    # Favoritter (pinnet ØVERST, alfabetisk)
+    # ------------------------------------------------------------------
+    def _load_fav_names(self):
+        try:
+            data = _load_ui_prefs().get(_favorites_key(self.namespace), [])
+            return set(str(x) for x in data) if isinstance(data, list) else set()
+        except Exception:
+            return set()
+
+    def _save_fav_names(self, names):
+        try:
+            _save_ui_pref(_favorites_key(self.namespace), sorted(set(names)))
+        except Exception:
+            pass
+
+    def _build_favorites_node(self):
+        """(Gen)opbyg favorit-knuden. Tom liste -> ingen knude (intet at glo paa)."""
+        favs = _resolve_favorites(self._class_list, self._load_fav_names())
+        if not favs:
+            self._fav_node = None
+            return
+        node = self.store.prepend(None)          # allerførst blandt top-knuderne
+        self.store.set(node, 0, _fav_label(), 1, "")  # "" i kol.1 = ikke en regel
+        for c in favs:                            # allerede alfabetisk
+            child = self.store.append(node)
+            self.store.set(child, 0, c.name, 1, c)
+        self._fav_node = node
+
+    def _refresh_favorites_node(self):
+        """Fjern og genopbyg favorit-knuden efter en til/fra-markering."""
+        try:
+            if (self._fav_node is not None
+                    and self.store.iter_is_valid(self._fav_node)):
+                self.store.remove(self._fav_node)
+        except Exception:
+            pass
+        self._fav_node = None
+        self._build_favorites_node()
+        try:
+            self.ruletree_filter.refilter()
+        except Exception:
+            pass
+        self._expand_favorites()
+
+    def _expand_favorites(self):
+        """Fold favoritter ud som standard (hele pointen er hurtig adgang)."""
+        if self._fav_node is None:
+            return
+
+        def _do():
+            try:
+                fmodel = self.ruletree_filter
+                ok, fit = fmodel.convert_child_iter_to_iter(self._fav_node)
+                if ok:
+                    self.rname.expand_row(fmodel.get_path(fit), False)
+            except Exception:
+                pass
+            return False    # koer een gang
+        GLib.idle_add(_do)
+
+    def _toggle_favorite(self, class_obj):
+        names = _toggled_favorites(self._load_fav_names(), class_obj.__name__)
+        self._save_fav_names(names)
+        self._refresh_favorites_node()
+
     def _preselect_if_editing(self):
         if not self.active_rule:
             return
@@ -643,6 +770,55 @@ class RuleEditor(ManagedWindow):
     def _button_press(self, obj, event):
         if event.type == Gdk.EventType.DOUBLE_BUTTON_PRESS and event.button == 1:
             return self.expand_collapse()
+        # Højreklik paa en REGEL-raekke -> favorit-menu (til/fra). Rammer baade
+        # raekken i en kategori OG en favorit-raekke (samme class_obj bag).
+        if (event.button == 3
+                and event.type == Gdk.EventType.BUTTON_PRESS):
+            class_obj = self._row_class_at(event)
+            if class_obj is not None:
+                self._show_fav_menu(event, class_obj)
+                return True
+        return False
+
+    def _row_class_at(self, event):
+        """class_obj under markoeren, eller None hvis det er en kategori/header."""
+        try:
+            info = self.rname.get_path_at_pos(int(event.x), int(event.y))
+        except Exception:
+            info = None
+        if not info:
+            return None
+        fpath = info[0]
+        try:
+            model = self.rname.get_model()          # filter-modellen
+            obj = model.get_value(model.get_iter(fpath), 1)
+        except Exception:
+            return None
+        # Marker raekken saa menuen har tydelig kontekst.
+        try:
+            self.selection.select_path(fpath)
+        except Exception:
+            pass
+        return obj if obj not in (None, "") else None
+
+    def _show_fav_menu(self, event, class_obj):
+        is_fav = class_obj.__name__ in self._load_fav_names()
+        label = _a(_FAV_REMOVE_MSGID) if is_fav else _a(_FAV_ADD_MSGID)
+        menu = Gtk.Menu()
+        item = Gtk.MenuItem(label=label)
+        item.connect("activate",
+                     lambda *_ignored: self._toggle_favorite(class_obj))
+        menu.append(item)
+        menu.show_all()
+        self._fav_menu = menu        # hold reference, ellers GC'es menuen straks
+        try:
+            menu.popup_at_pointer(event)             # GTK 3.22+
+        except Exception:
+            try:
+                menu.popup(None, None, None, None,
+                           event.button, event.time)  # aeldre GTK-fallback
+            except Exception:
+                pass
 
     def _key_press(self, obj, event):
         if event.keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):

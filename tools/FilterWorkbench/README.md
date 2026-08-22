@@ -5,8 +5,8 @@ person filters — with reusable *helper filters* as building blocks. It lives i
 **People** view sidebar and keeps its filters completely separate from Gramps' own
 filter editor list.
 
-> Danish UI included ("Filterværksted"). Works on Gramps **5.1** and **6.0.x**,
-> Windows and Linux.
+> Danish UI included ("Filterværksted"). Works on Gramps **5.1**, **5.2** and
+> **6.0.x**, Windows and Linux.
 
 ---
 
@@ -34,6 +34,9 @@ and only keep what works — all stored in its own per‑tree file. **Your
   skipped, real name‑clashes are renamed, and missing rule add‑ons are flagged before
   you commit.
 - **Regular‑expression / case‑sensitive matching** on rules that support it.
+- **Favorite rules** — right‑click a rule in the New/Edit picker to pin it under a
+  **★ Favorites** group at the very top, so the rules you use most are one click away.
+  Favorites are remembered across sessions and across all your trees.
 - **Per‑tree JSON storage** — nothing is written to `custom_filters.xml`.
 
 ## Install
@@ -44,8 +47,8 @@ and only keep what works — all stored in its own per‑tree file. **Your
    - **Windows:** `%APPDATA%\gramps\gramps<XY>\plugins\`
    - **Linux/macOS:** `~/.gramps/gramps<XY>/plugins/`
 
-   where `<XY>` is your version without the dot, e.g. `gramps60` for 6.0 or
-   `gramps52` for 5.2.
+   where `<XY>` is your version without the dot, e.g. `gramps60` for 6.0,
+   `gramps52` for 5.2, or `gramps51` for 5.1.
 
 3. Unzip the download into that folder so you get **one** sub‑folder holding all the
    add‑on's files, with the `locale/` folder kept intact:
@@ -72,7 +75,7 @@ and only keep what works — all stored in its own per‑tree file. **Your
 
 ## Requirements
 
-- Gramps 5.1 or 6.0.x (one code base fits both), Python 3, GTK 3.
+- Gramps 5.1, 5.2 or 6.0.x (one code base fits all three), Python 3, GTK 3.
 - If you import a filter that references a **rule add‑on** (e.g. a custom rule), install
   that same add‑on in the target Gramps — the import will warn you if it's missing.
 

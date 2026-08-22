@@ -1,4 +1,5 @@
 # Non-birth child — a Gramps review rule
+[ReadMe](README.md) • [Release Notes](RELEASE_NOTES.md) • [GNU GPL (license)](LICENSE)
 
 A custom filter rule for [Gramps](https://gramps-project.org/) that matches
 people who are recorded as a child with a relationship to a parent **other than

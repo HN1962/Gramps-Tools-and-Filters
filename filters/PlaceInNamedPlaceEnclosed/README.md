@@ -1,4 +1,5 @@
 # A named place and its sub-places — a Gramps filter rule V1.0.0
+[ReadMe](README.md) • [GNU GPL (license)](LICENSE)
 
 A custom **Places** filter rule for [Gramps](https://gramps-project.org/) that
 matches the named place itself plus **every place enclosed by it** — all the way

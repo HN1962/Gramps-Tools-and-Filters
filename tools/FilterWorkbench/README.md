@@ -1,4 +1,5 @@
 # FilterWorkbench (Filterværksted)
+[Guide](GUIDE.md) • [ReadMe](README.md) • [GNU GPL (license)](LICENSE)
 
 A Gramps gramplet for building, saving, editing, sharing and **testing** your own
 person filters — with reusable *helper filters* as building blocks. It lives in the

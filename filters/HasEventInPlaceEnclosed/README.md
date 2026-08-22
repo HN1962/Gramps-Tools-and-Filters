@@ -1,4 +1,5 @@
 # Event in Place (or sub-place) — a Gramps filter rule V1.0.0
+[ReadMe](README.md) • [GNU GPL (license)](LICENSE)
 
 A custom filter rule for [Gramps](https://gramps-project.org/) that matches
 people who have an **event whose place lies within a named place** — including

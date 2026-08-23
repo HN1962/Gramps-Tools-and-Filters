@@ -1,8 +1,15 @@
-# Common Biological Ancestor — a Gramps filter rule
-[ReadMe](README.md) • [Release Notes](RELEASE_NOTES.md) • [GNU GPL (license)](LICENSE)
+# Common Biological Ancestor — a Gramps filter rule V1.1.0
 
 A custom filter rule for [Gramps](https://gramps-project.org/) that matches
 people who share a **biological** ancestor with a chosen person.
+
+> **What "biological" means here.** Gramps records each child's link to a parent
+> with a *child-reference type* — **Birth**, Adopted, Foster, Stepchild or
+> Sponsored — shown in the relationship drop-down on the child reference. This
+> rule treats only the **Birth** links as biological and follows those alone.
+> Wherever this document says *biological*, it means "connected through a Birth
+> child-reference". (Gramps' own term for the link is *Birth*; this addon calls
+> the resulting line *biological* because that is what the traversal captures.)
 
 ## Why?
 
@@ -21,7 +28,7 @@ that family.
 
 ## Requirements
 
-- Gramps 5.2 or higher. The rule file works on both (the rule method was renamed
+- Gramps 5.x or 6.x. The rule file works on both (the rule method was renamed
   between the two major versions, and this addon defines both names).
 
 ## Installation
@@ -60,12 +67,18 @@ The rule relies entirely on the **child reference relationship type** (Birth /
 Adopted / Foster / …) recorded on each child, for both the father and the
 mother side. If an adopted or foster child is left with the default "Birth"
 relationship, it will still be counted as biological. It is worth checking that
-these relationship types are set correctly on the relevant families.
-For this purpose I have created a new filter that can help with this. It is called NonBirthChildRelation and can be found here ....
+these relationship types are set correctly — especially on **blended families**,
+those that mix birth and non-birth children.
+
+For this purpose I have created a companion rule,
+**"People recorded as a non-birth child"** (`HasNonBirthChildRelation`), which
+lists every child recorded with a non-birth relationship so you can review them:
+<https://myown-project.dk/tools/gramps-filter-rules/non-birth-child-relation>
 
 ## License
 
-GNU General Public License, version 2 or later — same as Gramps.
+GNU General Public License, version 2 or later — same as Gramps. The full text
+is in the accompanying [`LICENSE`](LICENSE) file.
 
 ## Translations (i18n)
 

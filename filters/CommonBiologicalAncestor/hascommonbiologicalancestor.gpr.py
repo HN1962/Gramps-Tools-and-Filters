@@ -32,8 +32,9 @@ if VERSION_TUPLE >= (5, 2, 0):
         name=_("People with a common biological ancestor with <person>"),
         description=_(
             "Matches people who share a common ancestor with a specified "
-            "person, following biological parent-child links only "
-            "(adoptive, foster and step relationships are excluded)."
+            "person, following only parent-child links recorded with the "
+            "\"Birth\" child-reference type -- i.e. the biological line. "
+            "Adopted, foster, step and sponsored relationships are excluded."
         ),
         version="1.1.0",
         authors=["Henning"],

@@ -45,7 +45,7 @@ A collection of independent filters and utility tools for Gramps.
   Run Gramps’ built-in data checks and save the results as a sortable HTML report
   that can be reviewed item by item.
 
-### - FilterWorkbench (Filterværksted) V2.0.
+### - FilterWorkbench (Filterværksted) V2.0.1
 
   A Gramps gramplet for building, saving, editing, sharing and **testing** your own
   person filters — with reusable *helper filters* as building blocks. It lives in the

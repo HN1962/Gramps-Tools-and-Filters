@@ -40,10 +40,29 @@ A collection of independent filters and utility tools for Gramps.
 
 ## Tools
 
-### - Verify the Data → HTML report V1.1.
+### - Easy Filter Builder V1.0
 
-  Run Gramps’ built-in data checks and save the results as a sortable HTML report
-  that can be reviewed item by item.
+A beginner-friendly way to build **person filters** in [Gramps](https://gramps-project.org/).
+
+Easy Filter Builder is **not a replacement for Gramps' Filter Editor** – quite the
+opposite: everything goes through it. What you build here is saved as ordinary
+Gramps custom filters, so they show up in the Filter Editor, the sidebar filter,
+reports and exports, and keep working without the addon.
+
+The focus is on making a filter **simple to build**. Real-world questions –
+*"everyone in my tree, except my wife's relatives and their spouses"* – normally
+need several helper filters, inverted rules and careful *all / at least one* choices.
+Here you build small **blocks** from ordinary Gramps rules and combine them in three
+baskets, while a live count shows how many people match. The helper filters are
+still there – Easy Filter Builder creates them for you as `ze_` filters, which sort to
+the bottom of the filter list.
+
+When the baskets aren't enough, you can write a **formula** instead – and it may be
+as complex as you like, even so complex that it can no longer be shown in the simple
+baskets.
+
+Made for Gramps **5.1, 5.2 and 6.0** (Tested on Gramps 5.1, 5.2 and 6.0.x in Windows and 6.0.x in Linux Zorin.
+MacOS has not been tested.).
 
 ### - FilterWorkbench (Filterværksted) V2.0.1
 
@@ -52,6 +71,18 @@ A collection of independent filters and utility tools for Gramps.
   **People** view sidebar and keeps its filters separate from Gramps' own filter editor
   list — until *you* choose to copy a finished filter across with **Export to** (and you
   can take it back out with **Remove from**).
+  Gramps' built‑in custom filters are powerful but fiddly to build, and every experiment
+  ends up in your custom_filters.xml. FilterWorkbench gives beginners and slightly experienced
+  users a friendlier workspace where you can build a filter, watch the live match count,
+  try it on the person list without closing the builder, and only keep what works
+  — all stored in its own per‑tree file. Your custom_filters.xml is never touched unless you
+  explicitly use Export to — a deliberate, non‑destructive opt‑in that you can undo with Remove from.
+  
   > Danish UI included ("Filterværksted"). Works on Gramps **5.1**, **5.2** and **6.0.x**,
   > Windows and Linux. A built‑in **Guide** button opens the full walkthrough (in Danish
   > automatically when Gramps runs in Danish).
+
+### - Verify the Data → HTML report V1.1.
+
+  Run Gramps’ built-in data checks and save the results as a sortable HTML report
+  that can be reviewed item by item.

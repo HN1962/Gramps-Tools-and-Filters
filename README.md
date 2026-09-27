@@ -40,7 +40,7 @@ A collection of independent filters and utility tools for Gramps.
 
 ## Tools
 
-### - Easy Filter Builder V1.0
+### - Easy Filter Builder V1.01
 
 A beginner-friendly way to build **person filters** in [Gramps](https://gramps-project.org/).
 

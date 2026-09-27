@@ -42,6 +42,8 @@ A collection of independent filters and utility tools for Gramps.
 
 ### - Easy Filter Builder V1.0
 
+Do not use Clone..., found a bug today sunday. It deletes your filters
+
 A beginner-friendly way to build **person filters** in [Gramps](https://gramps-project.org/).
 
 Easy Filter Builder is **not a replacement for Gramps' Filter Editor** – quite the

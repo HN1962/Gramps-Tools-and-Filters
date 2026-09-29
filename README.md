@@ -11,13 +11,13 @@ A collection of independent filters and utility tools for Gramps.
 
 ## Filters
 
-### - Non-birth child relation V1.1.
+### - Non-birth child relation V1.2.
 
   Matches people recorded as a child with a non-birth relationship
   to a parent (adopted, foster, step, etc.). Helps review that child
   relationship types are set correctly.
 
-### - Common Biological Ancestor V1.1.
+### - Common Biological Ancestor V1.2.
 
   Matches people who share a common ancestor with a specified
   person, following only parent-child links recorded with the
